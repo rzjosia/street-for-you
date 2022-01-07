@@ -9,7 +9,7 @@ jobs:
         - name: Firebase GitHub Action
           uses: jonahsnider/firebase-action@1.0.7
             env:
-                PROJECT_ID: "street-for-you-741c8"
+                PROJECT_ID: street-for-you-741c8
                 FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
             with:
                 args: deploy
