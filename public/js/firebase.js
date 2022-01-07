@@ -1,7 +1,11 @@
 firebase.initializeApp({
-    apiKey: "AIzaSyCfiaKA-nFmjjs2Q37DQo-kUf6AarFWbq8",
-    authDomain: "help-sdf-app.firebaseapp.com",
-    projectId: "help-sdf-app",
+    apiKey: "AIzaSyAH4ds1z3dk-kLn4ckIEQVTVYG9AWfjGRA",
+    authDomain: "street-for-you-741c8.firebaseapp.com",
+    projectId: "street-for-you-741c8",
+    storageBucket: "street-for-you-741c8.appspot.com",
+    messagingSenderId: "1083836164126",
+    appId: "1:1083836164126:web:fb56f4719d7165c5eae60f",
+    measurementId: "G-RK6MDL95C2"
 });
 
 const db = firebase.firestore();
