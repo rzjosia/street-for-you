@@ -4,27 +4,49 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development --port 8081 --env.API_URL=http://localhost:8080/api",
+    "start": "webpack serve --open --mode development --port 8081",
     "build": "webpack --mode production",
     "test": "jest"
+  },
+  "type": "module",
+  "jest": {
+    "moduleNameMapper": {
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
+    },
+    "testEnvironment": "jsdom",
+    "transform": {
+      "\\.js$": "babel-jest"
+    },
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
+    ]
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
     "@babel/preset-env": "^7.12.1",
     "@babel/register": "^7.12.1",
     "babel-loader": "^8.1.0",
     "css-loader": "^5.0.0",
     "html-webpack-plugin": "^4.5.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.7",
+    "jest-fetch-mock": "^3.0.3",
     "style-loader": "^2.0.0",
     "webpack": "^5.2.0",
     "webpack-cli": "^4.1.0",
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "firebase": "^7.24.0"
+    "babel-jest": "^27.4.6",
+    "core-js": "^3.20.3",
+    "file-loader": "^6.2.0",
+    "firebase": "^7.24.0",
+    "leaflet": "^1.7.1",
+    "node-fetch": "^3.2.0"
   }
 }
