@@ -30,8 +30,14 @@ module.exports = env => {
                 },
                 {
                     test: /\.(png|svg|jpg|gif)$/,
+                    type: "asset/resource",
                     use: {
                         loader: "file-loader",
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'img/',
+                            publicPath: '/'
+                        }
                     },
                 },
             ]

@@ -2,6 +2,7 @@ import firebase from "firebase";
 import GreenMarkerIcon from "../img/marker-icon-green.png";
 import OrangeMarkerIcon from "../img/marker-icon-orange.png";
 import ShadowMarker from "../img/marker-shadow.png";
+import { addLocation } from "./firebase";
 import L from "leaflet";
 import {getLocation, getLocationByAddress, getAddressByLocation} from "./fetchLocation";
 
