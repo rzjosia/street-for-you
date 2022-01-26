@@ -1,3 +1,11 @@
+import firebase from "firebase";
+import GreenMarkerIcon from "../img/marker-icon-green.png";
+import OrangeMarkerIcon from "../img/marker-icon-orange.png";
+import ShadowMarker from "../img/marker-shadow.png";
+import { addLocation } from "./firebase";
+import L from "leaflet";
+import {getLocation, getLocationByAddress, getAddressByLocation} from "./fetchLocation";
+
 let StreetSpeechRecognition;
 
 try {
@@ -6,21 +14,21 @@ try {
     StreetSpeechRecognition = Object;
 }
 
-const recognition = new StreetSpeechRecognition();
-const descriptionRecognition = new StreetSpeechRecognition();
+export const recognition = new StreetSpeechRecognition();
+export const descriptionRecognition = new StreetSpeechRecognition();
 descriptionRecognition.continuous = true;
-const ZOOM = 15;
-const rzMap = L.map("mapid").setView([51.505, -0.09], ZOOM);
-const COMFORTABLE = 'COMFORTABLE';
-const UNCOMFORTABLE = 'UNCOMFORTABLE';
-const MAP_TOKEN =
+export const ZOOM = 15;
+export const rzMap = L.map("mapid").setView([51.505, -0.09], ZOOM);
+export const COMFORTABLE = 'COMFORTABLE';
+export const UNCOMFORTABLE = 'UNCOMFORTABLE';
+export const MAP_TOKEN =
     "pk.eyJ1Ijoicnpqb3NpYSIsImEiOiJja2dqZHdwdGYwZmxvMnBuNDNvbm16dHR5In0.BYovotHxlYRLns01BpYTJQ";
-const WEATHER_TOKEN = "d4354106a2ca9ab50eebfc808698467f";
-const cityInput = document.querySelector("#city");
-const popup = L.popup();
-let isStreetMicOpen = false;
+export const WEATHER_TOKEN = "d4354106a2ca9ab50eebfc808698467f";
+export const cityInput = document.querySelector("#city");
+export const popup = L.popup();
+export let isStreetMicOpen = false;
 
-const toggleSpeech = (value) => {
+export const toggleSpeech = (value) => {
     const micIcon = document.querySelector('#mic-icon');
 
     if (value) {
@@ -35,47 +43,26 @@ const toggleSpeech = (value) => {
     isStreetMicOpen = value;
 }
 
-const getLocation = (latitude, longitude) => {
-    return fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`)
-        .then((data) => data.json())
-        .then((data) => data);
-}
-
-const getLocationByAddress = (address) => {
-    return fetch(`https://www.mapquestapi.com/geocoding/v1/address?key=rsqyf0EI5Am2rdQGwTEuNAzfGR0GpH0J&location=${address}`)
-        .then((data) => data.json())
-        .then((data) => data.results[0].locations[0]);
-}
-
-const getAddressByLocation = (location) => {
-    const streeNumber = typeof (location.stnumber) === 'object' || !location.stnumber ? '' : location.stnumber + ' ';
-    const address = typeof (location.staddress) === 'object' || !location.staddress ? '' : location.staddress + ', ';
-    const zip = typeof (location.postal) === 'object' || !location.postal ? '' : location.postal + ', ';
-    const city = typeof (location.city) === 'object' || !location.city ? '' : location.city;
-
-    return location.success === false ? '' : `${streeNumber}${address}${zip}${city}`;
-}
-
-const defaultIconParams = {
+export const defaultIconParams = {
     iconSize: [25, 47],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
-    shadowUrl: 'img/marker-shadow.png',
+    shadowUrl: ShadowMarker,
     shadowSize: [1, 34],
     shadowAnchor: [41, 41]
 }
 
-const comfortableMarkerIcon = L.icon({
-    iconUrl: 'img/marker-icon-green.png',
+export const comfortableMarkerIcon = L.icon({
+    iconUrl: GreenMarkerIcon,
     ...defaultIconParams
 });
 
-const uncomfortableMarkerIcon = L.icon({
-    iconUrl: 'img/marker-icon-orange.png',
+export const uncomfortableMarkerIcon = L.icon({
+    iconUrl: OrangeMarkerIcon,
     ...defaultIconParams
 });
 
-const initTileLayer = () => {
+export const initTileLayer = () => {
     L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
         {
@@ -90,7 +77,7 @@ const initTileLayer = () => {
     ).addTo(rzMap);
 }
 
-const geoLocate = () => {
+export const geoLocate = () => {
     if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(function (position) {
             rzMap.setView([position.coords.latitude, position.coords.longitude], ZOOM);
@@ -99,13 +86,13 @@ const geoLocate = () => {
     }
 }
 
-const addMarker = (data) => {
+export const addMarker = (data) => {
     const icon = data.situation === COMFORTABLE ? comfortableMarkerIcon : uncomfortableMarkerIcon;
     const markerPoint = L.marker([data.geoPoint.latitude, data.geoPoint.longitude], { icon }).addTo(rzMap);
     markerPoint.bindPopup(`<b>${data.situation === UNCOMFORTABLE ? 'Inconfortale' : 'Confortable'}</b><br/>${data.description}`);
 }
 
-const addPlace = async (e, options = {}) => {
+export const addPlace = async (e, options = {}) => {
     const content = document.createElement('div');
     content.innerHTML = '<div class="input-field col s12">' +
         '<select id="situation">' +
@@ -220,66 +207,3 @@ const addPlace = async (e, options = {}) => {
 
     M.updateTextFields();
 }
-
-rzMap.on("click", (e) => {
-    addPlace(e);
-});
-
-cityInput.addEventListener("keyup", async (e) => {
-    e.preventDefault();
-    const city = cityInput.value.trim();
-
-    if (e.keyCode === 13 && city.length > 0) {
-        try {
-            const location = await getLocationByAddress(city);
-            console.log(location);
-            rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
-        } catch (error) {
-            M.toast({ html: "Oups ! Une erreur s'est produite", classes: 'toast-error' });
-            console.error(error);
-        }
-    }
-});
-
-
-initTileLayer();
-geoLocate();
-
-getLocations().then((querySnapshot) => {
-    querySnapshot.forEach(async (marker) => {
-        const data = marker.data();
-        if (data.geoPoint && data.geoPoint.latitude && data.geoPoint.longitude) {
-            addMarker(data);
-        }
-    });
-});
-
-recognition.onspeechend = function () {
-    console.log("Speech end");
-    toggleSpeech(false)
-}
-
-recognition.onresult = async (event) => {
-    const transcript = event.results[0][0].transcript;
-    const confidence = event.results[0][0].confidence;
-    console.log(transcript);
-    try {
-        const location = await getLocationByAddress(transcript);
-        rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
-        cityInput.value = transcript;
-    } catch (error) {
-        M.toast({ html: "Oups ! Une erreur s'est produite", classes: 'toast-error' });
-        console.error(error);
-    }
-};
-
-document.querySelector('#mic-icon').addEventListener('click', () => {
-    isStreetMicOpen = !isStreetMicOpen;
-    toggleSpeech(isStreetMicOpen);
-});
-
-
-
-
-
-

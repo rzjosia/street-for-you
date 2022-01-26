@@ -1,3 +1,5 @@
+import firebase from "firebase";
+
 firebase.initializeApp({
     apiKey: "AIzaSyAH4ds1z3dk-kLn4ckIEQVTVYG9AWfjGRA",
     authDomain: "street-for-you-741c8.firebaseapp.com",
@@ -8,9 +10,9 @@ firebase.initializeApp({
     measurementId: "G-RK6MDL95C2"
 });
 
-const db = firebase.firestore();
+export const db = firebase.firestore();
 
-const addLocation = (lat, lng, situation, description) => {
+export const addLocation = (lat, lng, situation, description) => {
     const geoPoint = new firebase.firestore.GeoPoint(lat, lng);
     return db.collection("location")
         .add({
@@ -20,6 +22,6 @@ const addLocation = (lat, lng, situation, description) => {
         });
 }
 
-const getLocations = () => {
+export const getLocations = () => {
     return db.collection("location").get();
 }
