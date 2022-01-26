@@ -14,7 +14,6 @@ cityInput.addEventListener("keyup", async (e) => {
     if (e.keyCode === 13 && city.length > 0) {
         try {
             const location = await getLocationByAddress(city);
-            console.log(location);
             rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
         } catch (error) {
             M.toast({ html: "Oups ! Une erreur s'est produite", classes: 'toast-error' });
@@ -37,14 +36,12 @@ getLocations().then((querySnapshot) => {
 });
 
 recognition.onspeechend = function () {
-    console.log("Speech end");
     toggleSpeech(false)
 }
 
 recognition.onresult = async (event) => {
     const transcript = event.results[0][0].transcript;
     const confidence = event.results[0][0].confidence;
-    console.log(transcript);
     try {
         const location = await getLocationByAddress(transcript);
         rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
