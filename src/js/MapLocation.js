@@ -163,8 +163,6 @@ export const addPlace = async (e, options = {}) => {
         M.textareaAutoResize(document.querySelector("#description"));
     };
 
-    console.log(M)
-
     document.querySelector('#description-mic-icon').addEventListener('click', function() {
         isDescriptionOpen = !isDescriptionOpen;
         descriptionToggleSpeech(isDescriptionOpen);

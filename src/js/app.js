@@ -1,3 +1,5 @@
+import "./materialize.min";
+import "./mzbox.min";
 import L from "leaflet";
 import { db, addLocation, getLocations } from "./firebase";
 import { recognition, descriptionRecognition, ZOOM, rzMap, COMFORTABLE, UNCOMFORTABLE, MAP_TOKEN, cityInput, popup, isStreetMicOpen, toggleSpeech, defaultParams, comfortableMarkerIcon, uncomfortableMarkerIcon, initTileLayer, geoLocate, addMarker, addPlace} from "./MapLocation";
@@ -17,7 +19,6 @@ cityInput.addEventListener("keyup", async (e) => {
             rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
         } catch (error) {
             M.toast({ html: "Oups ! Une erreur s'est produite", classes: 'toast-error' });
-            console.error(error);
         }
     }
 });
@@ -48,7 +49,6 @@ recognition.onresult = async (event) => {
         cityInput.value = transcript;
     } catch (error) {
         M.toast({ html: "Oups ! Une erreur s'est produite", classes: 'toast-error' });
-        console.error(error);
     }
 };
 
