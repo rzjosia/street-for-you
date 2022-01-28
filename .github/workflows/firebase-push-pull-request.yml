@@ -18,7 +18,7 @@ jobs:
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
-          start: npm test-watch
+          start: npm run test-watch
           wait-on: http://localhost:8081
           browser: chrome
           headless: true
