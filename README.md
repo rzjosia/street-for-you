@@ -32,5 +32,5 @@ npm run test
 Run cypress with command line
 
 ```bash
-./node_modiles/.bin/cypress run --headless
+./node_modules/.bin/cypress run --headless
 ```
