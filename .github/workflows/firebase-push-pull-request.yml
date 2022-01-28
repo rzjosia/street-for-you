@@ -1,17 +1,46 @@
-name: Deploy a preview to Firebase Hosting on pull request
+name: Pull Request
 'on': pull_request
 jobs:
-  build_and_preview:
+  unit_test:
+    name: Unit Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: npm install
+      - name: Checkout Repo
+        uses: actions/checkout@v2
       - name: Run Jest
         uses: stefanoeb/jest-action@1.0.3
-      - name: build
+  e2e_test:
+    name: E2E Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run test-watch
+          wait-on: http://localhost:8081
+          browser: chrome
+          headless: true
+      - name: Get artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+  build_and_preview:
+    name: Build and Preview
+    needs: [unit_test, e2e_test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
         run: npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Firebase deploy a preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_STREET_FOR_YOU_741C8 }}'

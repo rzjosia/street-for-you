@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --mode development --port 8081",
     "build": "webpack --mode production",
-    "test": "jest"
+    "test": "jest",
+    "test-watch": "webpack serve --mode production --port 8081 --watch"
   },
   "jest": {
     "moduleNameMapper": {
@@ -29,8 +30,11 @@
     "@babel/plugin-transform-modules-commonjs": "^7.16.8",
     "@babel/preset-env": "^7.12.1",
     "@babel/register": "^7.12.1",
+    "@cypress/webpack-preprocessor": "^5.11.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^5.0.0",
+    "cypress": "^9.3.1",
+    "cypress-cucumber-preprocessor": "^4.3.1",
     "html-webpack-plugin": "^4.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.7",
@@ -48,6 +52,7 @@
     "file-loader": "^6.2.0",
     "firebase": "^7.24.0",
     "leaflet": "^1.7.1",
-    "node-fetch": "^3.2.0"
+    "node-fetch": "^3.2.0",
+    "os": "^0.1.2"
   }
 }

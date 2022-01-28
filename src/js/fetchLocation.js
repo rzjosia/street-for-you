@@ -4,16 +4,14 @@ export const getLocation = (latitude, longitude) => {
     return fetch(`https://geocode.xyz/${latitude},${longitude}?json=1`)
         .then(response => response.json())
         .then((data) => data)
-        .catch((e) => console.log('Fetch error : ' . e));
+        .catch((e) => e);
 }
 
 export const getLocationByAddress = (address) => {
     return fetch(`https://www.mapquestapi.com/geocoding/v1/address?key=rsqyf0EI5Am2rdQGwTEuNAzfGR0GpH0J&location=${address}`)
         .then(response => response.json())
         .then((data) => data.results[0].locations[0])
-        .catch((e) => {
-            console.log(e);
-        });
+        .catch((e) => e);
 }
 
 export const getAddressByLocation = (location) => {
