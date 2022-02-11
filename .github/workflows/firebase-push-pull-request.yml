@@ -9,7 +9,7 @@ jobs:
       contents: read
       security-events: write
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         language: [ 'javascript' ]
     steps:
@@ -52,7 +52,7 @@ jobs:
           path: cypress/screenshots
   build_and_preview:
     name: Build and Preview
-    needs: [unit_test, e2e_test]
+    needs: [analyze, unit_test, e2e_test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
