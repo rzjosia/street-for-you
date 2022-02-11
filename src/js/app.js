@@ -40,6 +40,8 @@ cityInput.addEventListener("keyup", async (e) => {
   if (e.keyCode === 13 && city.length > 0) {
     try {
       const location = await getLocationByAddress(city);
+      const key = "9jb78ume3t9yecwp15g2kbfa";
+
       rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
       fetch(
         "https://tomasz-test.ent.eu-west-1.aws.found.io/api/as/v1/engines/street4you/documents",
@@ -47,7 +49,7 @@ cityInput.addEventListener("keyup", async (e) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer private-9jb78ume3t9yecwp15g2kbfa",
+            Authorization: `Bearer private-${key}`,
           },
           body: JSON.stringify({
             postal_code: location.postalCode,
