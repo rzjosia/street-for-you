@@ -56,6 +56,7 @@ jobs:
           path: cypress/screenshots
   build_and_deploy:
     name: Build and deploy with terraform
+    needs: [analyze, unit_test, e2e_test]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
