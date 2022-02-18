@@ -41,29 +41,29 @@ cityInput.addEventListener("keyup", async (e) => {
     try {
       const location = await getLocationByAddress(city);
       rzMap.setView([location.latLng.lat, location.latLng.lng], ZOOM);
-      fetch(
-        "https://tomasz-test.ent.eu-west-1.aws.found.io/api/as/v1/engines/street4you/documents",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer private-9jb78ume3t9yecwp15g2kbfa",
-          },
-          body: JSON.stringify({
-            postal_code: location.postalCode,
-            department: location.adminArea4,
-            name: location.adminArea5,
-            slug: location.adminArea5,
-            gps_lat: location.latLng.lat,
-            gps_lng: location.latLng.lng,
-          }),
-        }
-      )
-        .then(response => response.json())
-        .then(data => console.log("Response data", data))
-        .catch((err) => {
-          console.log(err);
-        });
+      // fetch(
+      //   "https://tomasz-test.ent.eu-west-1.aws.found.io/api/as/v1/engines/street4you/documents",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer private-9jb78ume3t9yecwp15g2kbfa",
+      //     },
+      //     body: JSON.stringify({
+      //       postal_code: location.postalCode,
+      //       department: location.adminArea4,
+      //       name: location.adminArea5,
+      //       slug: location.adminArea5,
+      //       gps_lat: location.latLng.lat,
+      //       gps_lng: location.latLng.lng,
+      //     }),
+      //   }
+      // )
+      //   .then(response => response.json())
+      //   .then(data => console.log("Response data", data))
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     } catch (error) {
       M.toast({
         html: "Oups ! Une erreur s'est produite",
